@@ -9,7 +9,7 @@ public class Testeee {
 
     public static void main(String[] args) {
         CardDAO c = new CardDAO();
-        c.insert(new Card("999567578", new BigDecimal(12.3)));
+        c.saveCard(new Card("123456789012", new BigDecimal(12.3)));
         List<Card> cards = c.getCards();
         for (Card card : cards) {
             System.out.println(card);

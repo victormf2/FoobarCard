@@ -14,7 +14,7 @@ public class CardDAO {
         factory = new Configuration().configure().buildSessionFactory();
     }
 
-    public void insert(Card card) {
+    public void saveCard(Card card) {
         Session session = factory.openSession();
         session.beginTransaction();
         session.save(card);
@@ -26,5 +26,20 @@ public class CardDAO {
         Session session = factory.openSession();
         Criteria c = session.createCriteria(Card.class);
         return c.list();
+    }
+    
+    public Card getCard(String cardNumber) {
+        Session session = factory.openSession();
+        Card card = (Card) session.get(Card.class, cardNumber);
+        session.close();
+        return card;
+    }
+    
+    public void updateCard(Card card) {
+        Session session = factory.openSession();
+        session.beginTransaction();
+        session.update(card);
+        session.getTransaction().commit();
+        session.close();
     }
 }

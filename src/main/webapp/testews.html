@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script type="text/javascript">
+            var xmlhttp;
+            if (window.XMLHttpRequest) {
+                xmlhttp=new XMLHttpRequest();
+            } else {
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.open("POST","http://localhost:8080/Foobar/Services/autorizacao",true);
+            xmlhttp.setRequestHeader("Content-type", "text/xml");
+            var xml = '<?xml version="1.0" ?>' +
+                      '<requisicao>' +
+                        '<dataExpiracao>03/03</dataExpiracao>' +
+                        '<numeroCartao>123456789012</numeroCartao>' +
+                        '<valor>14.</valor>' +
+                      '</requisicao>';
+            xmlhttp.send(xml);
+            xmlhttp.onreadystatechange=function() {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                    alert(xmlhttp.responseText);
+                }
+             }
+        </script>
+    </head>
+    <body>
+        <div id="myDiv"></div>
+    </body>
+</html>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="requisicao">
+        <xs:complexType>
+            <xs:all>
+                
+                <xs:element name="numeroCartao">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:length value="12" />
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                
+                <xs:element name="dataExpiracao">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:pattern value="([0][1-9]|[1][0-2])/(\d{2})"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                
+                <xs:element name="valor">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:decimal">
+                            <xs:fractionDigits value='2'/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

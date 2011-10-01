@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement 
 public class Requisicao {
     
-    private BigDecimal numeroCartao;
+    private String numeroCartao;
     private String dataExpiracao;
     private BigDecimal valor;
 
@@ -25,11 +25,11 @@ public class Requisicao {
     }
 
     @XmlElement(name="numeroCartao", required=true)
-    public BigDecimal getNumeroCartao() {
+    public String getNumeroCartao() {
         return numeroCartao;
     }
 
-    public void setNumeroCartao(BigDecimal numeroCartao) {
+    public void setNumeroCartao(String numeroCartao) {
         this.numeroCartao = numeroCartao;
     }
 
