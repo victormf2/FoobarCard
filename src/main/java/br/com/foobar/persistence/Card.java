@@ -28,7 +28,7 @@ public class Card implements Serializable{
     }
 
     @Id
-    @Column(name="card_number")
+    @Column(name="card_number", length=16)
     public String getCardNumber() {
         return cardNumber;
     }

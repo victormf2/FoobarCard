@@ -8,7 +8,7 @@
                 <xs:element name="numeroCartao">
                     <xs:simpleType>
                         <xs:restriction base="xs:string">
-                            <xs:length value="12" />
+                            <xs:maxLength value="16" />
                         </xs:restriction>
                     </xs:simpleType>
                 </xs:element>

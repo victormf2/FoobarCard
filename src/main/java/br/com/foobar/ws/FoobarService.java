@@ -1,9 +1,12 @@
 package br.com.foobar.ws;
 
 import br.com.foobar.business.CardManager;
+import br.com.foobar.persistence.Card;
+import br.com.foobar.persistence.CardDAO;
 import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -35,9 +38,13 @@ public class FoobarService {
     @POST
     @Consumes(MediaType.TEXT_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Resposta postXml(String xmlRequisicao) throws Exception {
-        Requisicao requisicao = parseXmlToRequisicao(xmlRequisicao);
-        return respostaToRequisicao(requisicao);
+    public Resposta postXml(String xmlRequisicao) {
+        try {
+            Requisicao requisicao = parseXmlToRequisicao(xmlRequisicao);
+            return respostaToRequisicao(requisicao);
+        } catch (Exception ex) {
+            return RESPOSTA_RECUSADO;
+        }
 
     }
 
