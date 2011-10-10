@@ -10,13 +10,89 @@
             $(function() {
                 $("#dialog").dialog({
                     autoOpen: false,
-                    modal: true
+                    modal: true,
+                    width: 325,
+                    resizable: false
+                });
+                $("#result-dialog").dialog({
+                    autoOpen: false,
+                    modal: true,
+                    width: 325,
+                    resizable: false,
+                    dialogClass: 'noTitleStuff',
+                    height: 120
                 });
             });
             function openConfirmDialog(imagem, preco){
                 $("#imagem").attr("src", "img/"+imagem);
-                $("#preco").html(preco+"<br><br><br>");
+                $("#preco-info").html("R$ "+preco+"<br><br><br>");
+                $("#preco").val(preco.replace(",","."));
                 $("#dialog").dialog('open');
+            }
+            
+            function openResultDialog(codigoRetorno, mensagem) {
+                $("#dialog").dialog('close');
+                $("#result-dialog").dialog('open');
+                color = codigoRetorno == 1 ? "green" : "red";
+                $("#result-dialog").css("color", color);
+                $("#result-dialog").html(mensagem);
+            }
+            function submit() {
+                if(validarForm()) {
+                    fazerRequisicao();
+                }
+                return false;
+            }
+            
+            function validarForm() {
+                regexNumeroCartao = /^[0-9]{4,16}$/;
+                regexAno = /^[0-9]{2}$/
+                formValido = true;
+                $(".erro").remove();
+                if(!regexNumeroCartao.test($("#numeroCartao").val())) {
+                    $("#erros").append('<div class="erro">Forne&ccedil;a um N&uacute;mero de cart&atilde;o v&aacute;lido (4 a 16 d&iacute;gitos)</div>');
+                    formValido = false;
+                }
+                if(!$("#mes").val()) {
+                    $("#erros").append('<div class="erro">Escolha um M&ecirc;s</div>');
+                    formValido = false;
+                }
+                if(!regexAno.test($("#ano").val())) {
+                    $("#erros").append('<div class="erro">Forne&ccedil;a um Ano v&aacute;lido (2 d&iacute;gitos)</div>');
+                    formValido = false;
+                }
+                return formValido;
+            }
+            
+            function fazerRequisicao() {
+                var xmlhttp;
+                if (window.XMLHttpRequest) {
+                    xmlhttp=new XMLHttpRequest();
+                } else {
+                    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.open("POST","http://localhost:8080/Foobar/Services/autorizacao",true);
+                xmlhttp.setRequestHeader("Content-type", "text/xml");
+                dataExpiracao = $("#mes").val()+"/"+$("#ano").val();
+                numeroCartao = $("#numeroCartao").val();
+                valor = $("#preco").val();
+                var xml = '<?xml version="1.0" ?>' +
+                    '<requisicao>' +
+                    '<dataExpiracao>'+dataExpiracao+'</dataExpiracao>' +
+                    '<numeroCartao>'+numeroCartao+'</numeroCartao>' +
+                    '<valor>'+valor+'</valor>' +
+                    '</requisicao>';
+                //alert(xml);
+                xmlhttp.send(xml);
+                xmlhttp.onreadystatechange=function() {
+                    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                        //alert(xmlhttp.responseText);
+                        responseXml = xmlhttp.responseXML;
+                        codigoRetorno = responseXml.getElementsByTagName("codigoRetorno")[0].textContent;
+                        mensagem = responseXml.getElementsByTagName("mensagem")[0].textContent;
+                        openResultDialog(codigoRetorno, mensagem);
+                    }
+                }
             }
         </script>
     </head>
@@ -29,61 +105,70 @@
             <div class="content imagem">
                 <img src="img/cadeira.jpg"/>
             </div>
-            <div class="content preco">R$ 449,90</div>
-            <div class="content botao"><a href="" onclick="openConfirmDialog('cadeira.jpg', 'R$ 449,90'); return false"></a></div>
+            <div class="content preco">R$ 30,00</div>
+            <div class="content botao"><a href="" onclick="openConfirmDialog('cadeira.jpg', '30,00'); return false"></a></div>
         </div>
 
         <div class="item">
             <div class="content imagem">
                 <img src="img/cama.jpg"/>
             </div>
-            <div class="content preco">R$ 1299,90</div>
-            <div class="content botao"><a href="" onclick="openConfirmDialog('cama.jpg', 'R$ 1299,90'); return false"></a></div>
+            <div class="content preco">R$ 100,00</div>
+            <div class="content botao"><a href="" onclick="openConfirmDialog('cama.jpg', '100,00'); return false"></a></div>
         </div>
 
         <div class="item">
             <div class="content imagem">
                 <img src="img/guitarra.jpg"/>
             </div>
-            <div class="content preco">R$ 800,00</div>
-            <div class="content botao"><a href="" onclick="openConfirmDialog('guitarra.jpg', 'R$ 800,00'); return false"></a></div>
+            <div class="content preco">R$ 20,00</div>
+            <div class="content botao"><a href="" onclick="openConfirmDialog('guitarra.jpg', '20,00'); return false"></a></div>
         </div>
 
         <div class="item">
             <div class="content imagem">
                 <img src="img/panelas.jpg"/>
             </div>
-            <div class="content preco">R$ 70,50</div>
-            <div class="content botao"><a href="" onclick="openConfirmDialog('panelas.jpg', 'R$ 70,50'); return false"></a></div>
+            <div class="content preco">R$ 10,00</div>
+            <div class="content botao"><a href="" onclick="openConfirmDialog('panelas.jpg', '10,00'); return false"></a></div>
         </div>
 
         <div id="dialog" title="Confirmacao da compra">
             <form>
                 <img id="imagem" src="img/cadeira.jpg"/><br>
-                <span id="preco">R$ 449,90<br><br><br></span>
+                <span id="preco-info">R$ 449,90<br><br><br></span>
+                <input id="preco" type="hidden" value="449,90" />
                 <center>
-                <table>
-                    <tr><td class="label">N&uacute;mero do cart&atilde;o</td></tr>
-                    <tr><td class="input"><input type="text" name="numeroCartao" id="numeroCartao" value="" size="16" maxlength="16"/></td></tr>
-                    <tr><td class="label">Data de expira&ccedil;&atilde;o</td></tr>
-                    <tr><td class="label">M&ecirc;s <select name="mes">
-                                <option value="01">Janeiro</option>
-                                <option value="02">Fevereiro</option>
-                                <option value="03">Mar&ccedil;o</option>
-                                <option value="04">Abril</option>
-                                <option value="05">Maio</option>
-                                <option value="06">Junho</option>
-                                <option value="07">Julho</option>
-                                <option value="08">Agosto</option>
-                                <option value="09">Setembro</option>
-                                <option value="10">Outubro</option>
-                                <option value="11">Novembro</option>
-                                <option value="12">Dezembro</option>
-                            </select></td></tr>
-                    <tr><td class="input">Ano <input type="text" name="ano" value="" size="2" maxlength="2"/></td></tr>
-                    <tr><td class="input"><div class="botao" style="padding-left: 40px;"><a href="" onclick="submit();"></a></div></td></tr>
-                </table>
+                    <table>
+                        <tr><td class="label">N&uacute;mero do cart&atilde;o</td></tr>
+                        <tr><td class="input"><input type="text" id="numeroCartao" value="" size="16" maxlength="16"/></td></tr>
+                        <tr><td class="label">Data de expira&ccedil;&atilde;o</td></tr>
+                        <tr><td class="label">M&ecirc;s <select id="mes" name="mes">
+                                    <option value="">--------</option>
+                                    <option value="01">Janeiro</option>
+                                    <option value="02">Fevereiro</option>
+                                    <option value="03">Mar&ccedil;o</option>
+                                    <option value="04">Abril</option>
+                                    <option value="05">Maio</option>
+                                    <option value="06">Junho</option>
+                                    <option value="07">Julho</option>
+                                    <option value="08">Agosto</option>
+                                    <option value="09">Setembro</option>
+                                    <option value="10">Outubro</option>
+                                    <option value="11">Novembro</option>
+                                    <option value="12">Dezembro</option>
+                                </select></td></tr>
+                        <tr><td class="input">Ano <input id="ano" type="text" value="" size="2" maxlength="2"/></td></tr>
+                        <tr><td class="input"><div class="botao" style="padding-left: 40px;"><a href="" onclick="return submit()"></a></div></td></tr>
+                    </table>
                 </center>
+            </form>
+            <div id="erros" style="font-size: 8pt; color: red; text-align: left;"></div>
+        </div>
+
+        <div id="result-dialog">
+            <form>
+                <div id="mensagem"></div>
             </form>
         </div>
     </body>
