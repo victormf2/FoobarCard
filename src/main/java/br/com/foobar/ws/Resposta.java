@@ -1,18 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.foobar.ws;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement 
+@XmlRootElement
 public class Resposta {
-    
+
     private short codigoRetorno;
     private String mensagem;
-    
     public static final short CODIGO_RETORNO_APROVADO = 1;
     public static final short CODIGO_RETORNO_RECUSADO = 0;
     public static final String MENSAGEM_APROVADO = "Transacao Aprovada";
@@ -20,13 +15,13 @@ public class Resposta {
 
     public Resposta() {
     }
-    
+
     public Resposta(short codigoRetorno, String mensagem) {
         this.codigoRetorno = codigoRetorno;
         this.mensagem = mensagem;
     }
 
-    @XmlElement(name="codigoRetorno", required=true)
+    @XmlElement(name = "codigoRetorno", required = true)
     public short getCodigoRetorno() {
         return codigoRetorno;
     }
@@ -35,7 +30,7 @@ public class Resposta {
         this.codigoRetorno = codigoRetorno;
     }
 
-    @XmlElement(name="mensagem", required=true)
+    @XmlElement(name = "mensagem", required = true)
     public String getMensagem() {
         return mensagem;
     }
@@ -43,7 +38,7 @@ public class Resposta {
     public void setMensagem(String mensagem) {
         this.mensagem = mensagem;
     }
-    
+
     @Override
     public String toString() {
         return String.format("Resposta "

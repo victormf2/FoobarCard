@@ -7,10 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity(name="Card")
-@Table(name="card")
-public class Card implements Serializable{
-    
+@Entity(name = "Card")
+@Table(name = "card")
+public class Card implements Serializable {
+
     private String cardNumber;
     private BigDecimal cardLimit;
 
@@ -22,13 +22,13 @@ public class Card implements Serializable{
         this.cardLimit = cardLimit;
     }
 
-    @Column(name="card_limit")
+    @Column(name = "card_limit")
     public BigDecimal getCardLimit() {
         return cardLimit;
     }
 
     @Id
-    @Column(name="card_number", length=16)
+    @Column(name = "card_number", length = 16)
     public String getCardNumber() {
         return cardNumber;
     }
@@ -45,6 +45,4 @@ public class Card implements Serializable{
     public String toString() {
         return "br.com.foobar.persistence.Card [ cardNumber=" + cardNumber + ", cardLimit=" + cardLimit + " ]";
     }
-    
-    
 }

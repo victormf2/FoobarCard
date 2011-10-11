@@ -1,12 +1,9 @@
 package br.com.foobar.ws;
 
 import br.com.foobar.business.CardManager;
-import br.com.foobar.persistence.Card;
-import br.com.foobar.persistence.CardDAO;
 import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

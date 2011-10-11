@@ -23,14 +23,14 @@ public class CardDAO {
         Criteria c = session.createCriteria(Card.class);
         return c.list();
     }
-    
+
     public Card getCard(String cardNumber) {
         Session session = HibernateUtil.getSession();
         Card card = (Card) session.get(Card.class, cardNumber);
         session.close();
         return card;
     }
-    
+
     public void updateCard(Card card) {
         Session session = HibernateUtil.getSession();
         session.beginTransaction();

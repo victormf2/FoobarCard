@@ -10,7 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-public class HSQLPopulateServlet implements Servlet{
+public class HSQLPopulateServlet implements Servlet {
 
     @Override
     public void init(ServletConfig sc) throws ServletException {
@@ -20,10 +20,9 @@ public class HSQLPopulateServlet implements Servlet{
         cardDAO.saveCard(new Card("123400000002", new BigDecimal(50)));
         cardDAO.saveCard(new Card("123400000003", new BigDecimal(100)));
         cardDAO.saveCard(new Card("1234567890987654", new BigDecimal(30)));
-        
 
         java.util.List<Card> l = cardDAO.getCards();
-        for (Card c: l) {
+        for (Card c : l) {
             System.out.println(c);
         }
     }
@@ -45,5 +44,4 @@ public class HSQLPopulateServlet implements Servlet{
     @Override
     public void destroy() {
     }
-    
 }
